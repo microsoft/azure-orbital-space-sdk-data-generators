@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datagenerator-planetary-computer
+  namespace: platformsvc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: datagenerator-planetary-computer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datagenerator-planetary-computer
+  namespace: platformsvc
+  labels:
+    app: datagenerator-planetary-computer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datagenerator-planetary-computer
+  template:
+    metadata:
+      labels:
+        app: datagenerator-planetary-computer
+      annotations:
+    spec:
+      containers:
+      - name: datagenerator-planetary-computer
+        image: registry.spacefx.local:5000/datagenerator-planetary-computer:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+            limits:
+              memory: 4Gi
+            requests:
+              memory: 50Mi

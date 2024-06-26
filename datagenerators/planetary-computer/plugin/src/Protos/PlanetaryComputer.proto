@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Microsoft.Azure.SpaceFx.PlanetaryComputerGeotiff";
+package Microsoft.Azure.SpaceFx.PlanetaryComputerGeotiff;
+
+message GeographicCoordinates {
+   float latitude = 1;
+   float longitude = 2;
+}
+
+
+message EarthImageRequest {
+   enum Order{
+      none = 0;
+      ascending = 1;
+      descending = 2;
+   }
+   GeographicCoordinates geographicCoordinates = 1;
+   string collection = 2;
+   int32 maxItems = 3;
+   Order order = 4;
+   string orderBy = 5;
+   google.protobuf.Timestamp minTime = 6;
+   google.protobuf.Timestamp maxTime = 7;
+   int32 top = 8;
+   repeated string asset = 9;
+}
+
+message EarthImageResponse {
+   message ImageFile {
+      string asset = 1;
+      string fileName = 2;
+   }
+
+   EarthImageRequest original_request = 1;
+   repeated ImageFile imageFiles = 2;
+
+}
