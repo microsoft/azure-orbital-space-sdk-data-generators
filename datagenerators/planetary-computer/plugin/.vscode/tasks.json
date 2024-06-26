@@ -14,6 +14,7 @@
             "type": "shell",
             "dependsOn": [
                 "build",
+                "check-datagenerator"
             ],
             "dependsOrder": "sequence",
             "args": [
@@ -23,6 +24,24 @@
             ],
             "presentation": {
                 "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "check-datagenerator",
+            "isBackground": true,
+            "command": "/bin/bash",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "args": [
+                "/workspace/planetary-computer-vth-plugin/.vscode/check-datagenerator.sh"
+            ],
+            "presentation": {
+                "echo": false,
                 "reveal": "never",
                 "focus": false,
                 "panel": "shared",
@@ -57,7 +76,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/vth-plugin-starter.csproj",
+                "${workspaceFolder}/src/planetary-computer-vth-plugin.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

@@ -6,8 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="/workspace/vth-plugin-starter/src/vth-plugin-starter.csproj" />
+    <ProjectReference Include="/workspace/planetary-computer-vth-plugin/src/planetary-computer-vth-plugin.csproj" />
   </ItemGroup>
 </Project>

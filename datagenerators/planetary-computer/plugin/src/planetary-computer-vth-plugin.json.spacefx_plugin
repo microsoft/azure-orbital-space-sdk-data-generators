@@ -1,6 +1,6 @@
 {
-    "pluginFile": "vth-plugin-starter.dll",
-    "pluginName": "vth-plugin-starter",
+    "pluginFile": "planetary-computer-vth-plugin.dll",
+    "pluginName": "planetary-computer-vth-plugin",
     "targetService": "vth",
     "plugin_permissions": "ALL",
     "core_permissions": "ALL",

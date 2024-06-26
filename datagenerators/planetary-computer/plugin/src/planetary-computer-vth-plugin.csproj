@@ -9,11 +9,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.SpaceSDK.Core" Version="$([System.IO.File]::ReadAllText('/spacefx-dev/config/spacefx_version'))" />
     <PackageReference Include="Microsoft.Azure.SpaceSDK.VTH.Plugins" Version="$([System.IO.File]::ReadAllText('/spacefx-dev/config/spacefx_version'))" />
+    <PackageReference Include="Grpc.Tools" Version="2.57.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="/workspace/planetary-computer-vth-plugin/src/Protos/PlanetaryComputer.proto" ProtoRoot="/workspace/planetary-computer-vth-plugin/src/Protos/" GrpcServices="Public" Access="Public" ProtoCompile="True" CompileOutputs="True" OutputDir="obj/Debug/net6.0/"></Protobuf>
   </ItemGroup>
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Copy SourceFiles="vth-plugin-starter.json.spacefx_plugin" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="planetary-computer-vth-plugin.json.spacefx_plugin" DestinationFolder="$(OutDir)" />
   </Target>
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="vth-plugin-starter.json.spacefx_plugin" DestinationFolder="$(PublishDir)" />
+    <Copy SourceFiles="planetary-computer-vth-plugin.json.spacefx_plugin" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>

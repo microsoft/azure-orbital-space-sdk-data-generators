@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tool-planetary-computer-geotiff
+  name: datagenerator-planetary-computer
   namespace: platformsvc
 spec:
   type: ClusterIP
@@ -10,29 +10,29 @@ spec:
     - port: 8080
       targetPort: 8080
   selector:
-    app: tool-planetary-computer-geotiff
+    app: datagenerator-planetary-computer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tool-planetary-computer-geotiff
+  name: datagenerator-planetary-computer
   namespace: platformsvc
   labels:
-    app: tool-planetary-computer-geotiff
+    app: datagenerator-planetary-computer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tool-planetary-computer-geotiff
+      app: datagenerator-planetary-computer
   template:
     metadata:
       labels:
-        app: tool-planetary-computer-geotiff
+        app: datagenerator-planetary-computer
       annotations:
     spec:
       containers:
-      - name: tool-planetary-computer-geotiff
-        image: registry.spacefx.local:5000/tool-planetary-computer-geotiff:0.10.0
+      - name: datagenerator-planetary-computer
+        image: registry.spacefx.local:5000/datagenerator-planetary-computer:latest
         imagePullPolicy: IfNotPresent
         resources:
             limits:

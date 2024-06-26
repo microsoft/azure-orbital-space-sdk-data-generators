@@ -1,15 +1,15 @@
 [tool.poetry]
-name = "tool-planetary-computer-geotiff"
+name = "datagenerator-planetary-computer"
 description = "..."
 authors = [ "Azure Space SDK" ]
 version = "0.10.0"
 readme = "README.md"
 packages = [
-    { include = "tool_planetary_computer_geotiff", from = "src" },
+    { include = "datagenerator_planetary_computer", from = "src" },
 ]
 
 [tool.poetry.scripts]
-tool-planetary-computer-geotiff = 'tool_planetary_computer_geotiff.main:main'
+datagenerator-planetary-computer = 'datagenerator_planetary_computer.main:main'
 
 [tool.poetry.dependencies]
 python = "^3.8"
