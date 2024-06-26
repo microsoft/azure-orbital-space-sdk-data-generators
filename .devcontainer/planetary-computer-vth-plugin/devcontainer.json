@@ -15,6 +15,9 @@
 			"addl_debug_shim_suffixes": "client"
 		}
 	},
+	"mounts": [
+    "source=${localWorkspaceFolder}/datagenerators/planetary-computer/datagenerator,target=/workspace/planetary-computer-vth-datagenerator,type=bind,consistency=cached"
+	],
 	"hostRequirements": {
 		"cpus": 8,
 		"memory": "8gb"

@@ -8,7 +8,7 @@
 		"planetary-computer-datagenerator"
 	],
     "workspaceFolder": "/workspace/planetary-computer-datagenerator",
-	"workspaceMount": "source=${localWorkspaceFolder}/datagenerators/planetary-computer/datagenerator,target=/workspace/workspace/planetary-computer-datagenerator,type=bind,consistency=cached",
+	"workspaceMount": "source=${localWorkspaceFolder}/datagenerators/planetary-computer/datagenerator,target=/workspace/planetary-computer-datagenerator,type=bind,consistency=cached",
 
 	"hostRequirements": {
 		"cpus": 4,
