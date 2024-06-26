@@ -13,6 +13,24 @@ def get_pystac_client():
     return Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=planetary_computer.sign_inplace)
 
 
+@APP_.route('/healthz', methods=["GET"])
+def health_check():
+    """
+    Returns that the datagenerator is healthy and ready
+
+    Returns:
+        response (JSON string): A list of all properties available for items in the collection.
+    """
+    print("Received health check")
+
+    response_string = json.dumps("Hello from the Planetary Computer DataGenerator!")
+    print(f'Response:\n{response_string}')
+    response = make_response(response_string, 200)
+    response.mimetype = "text/plain"
+    return response
+
+
+
 @APP_.route('/<collection>/items/<float(signed=True):lat>/<float(signed=True):lon>', methods=["GET"])
 def get_items(collection, lat, lon):
     """

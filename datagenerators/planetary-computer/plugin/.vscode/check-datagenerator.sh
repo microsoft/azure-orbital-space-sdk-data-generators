@@ -25,6 +25,7 @@ set +e
 # Script variables
 ############################################################
 DATA_GENERATOR_NAME="datagenerator-planetary-computer"
+DATA_GENERATOR_NAMESPACE="platformsvc"
 REGISTRY_NAME=""
 DATA_GENERATOR_WORKING_DIR="/workspace/planetary-computer-vth-datagenerator"
 DOCKER_FILENAME="${DATA_GENERATOR_WORKING_DIR}/Dockerfiles/Dockerfile"
@@ -102,7 +103,7 @@ function main() {
             return
         else
             info_log "...deployment '${DATA_GENERATOR_DEPLOYMENT_NAME}' is found and 'FORCE_DEPLOY' = TRUE.  Deleting deployment..."
-            run_a_script "kubectl delete deployment/${DATA_GENERATOR_DEPLOYMENT_NAME}"
+            run_a_script "kubectl delete deployment/${DATA_GENERATOR_DEPLOYMENT_NAME} -n ${DATA_GENERATOR_NAMESPACE}"
             info_log "...deployment '${DATA_GENERATOR_DEPLOYMENT_NAME}' successfully deleted."
         fi
     fi

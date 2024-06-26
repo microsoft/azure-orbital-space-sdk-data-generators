@@ -3,6 +3,7 @@ public class PlanetaryComputerVTHPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Pl
 
     private readonly string OUTPUT_DIR = "";
     public const string SENSOR_ID = "PlanetaryComputer";
+    private readonly string DATA_GENERATOR_URL = "http://datagenerator-planetary-computer.platformsvc.svc.cluster.local:8080";
     private readonly HttpClient HTTP_CLIENT;
     private readonly ConcurrentQueue<TaskingRequest> IMAGE_QUEUE = new();
     private readonly ConcurrentDictionary<string, LinkRequest> LinkRequestIDs = new();
@@ -203,6 +204,9 @@ public class PlanetaryComputerVTHPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Pl
             }
         } catch (Exception ex) {
             // If an exception occurs, update the response status and message
+            Logger.LogError("{pluginName}: {methodRequest} Error processing request.  Error: {error}. (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(PlanetaryComputerVTHPlugin), nameof(processImageRequest), ex.Message, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
             sensorData.ResponseHeader.Status = StatusCodes.GeneralFailure;
             sensorData.ResponseHeader.Message = $"{nameof(PlanetaryComputerVTHPlugin)}: Error processing request: {ex.Message}";
             return sensorData; // Return the sensor data with the error information
@@ -244,7 +248,7 @@ public class PlanetaryComputerVTHPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Pl
     // Define an asynchronous method to query the Planetary Computer for images based on geographic coordinates
     private async Task<Dictionary<string, string>> queryPlanetaryComputerForImages(PlanetaryComputerGeotiff.EarthImageRequest imageRequest, RequestHeader requestHeader) {
         // Construct the URL for querying the Planetary Computer with the specified image collection and geographic coordinates
-        var url = $"http://tool-planetary-computer-geotiff:8080/{imageRequest.Collection}/items/{imageRequest.GeographicCoordinates.Latitude}/{imageRequest.GeographicCoordinates.Longitude}?{generatePlanetaryComputerQueryString(imageRequest)}";
+        var url = $"{DATA_GENERATOR_URL}/{imageRequest.Collection}/items/{imageRequest.GeographicCoordinates.Latitude}/{imageRequest.GeographicCoordinates.Longitude}?{generatePlanetaryComputerQueryString(imageRequest)}";
 
         // Log the URL being queried along with tracking and correlation IDs
         Logger.LogDebug("{pluginName}: {methodRequest} Querying planetary computer: {url}  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
