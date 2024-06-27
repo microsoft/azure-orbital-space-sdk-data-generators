@@ -77,10 +77,10 @@ function build_image() {
     fi
 
 
-    run_a_script "docker build -t ${_registry_url_for_host}/${DATA_GENERATOR_NAME}:latest -f ${DOCKER_FILENAME} ${DATA_GENERATOR_WORKING_DIR}"
+    run_a_script "docker build -t ${_registry_url_for_host}/${DATA_GENERATOR_NAME}:${SPACEFX_VERSION} -f ${DOCKER_FILENAME} ${DATA_GENERATOR_WORKING_DIR}"
 
     info_log "...'${DATA_GENERATOR_NAME}' built.  Pushing to '${_registry_url}'..."
-    run_a_script "docker push ${_registry_url_for_host}/${DATA_GENERATOR_NAME}:latest"
+    run_a_script "docker push ${_registry_url_for_host}/${DATA_GENERATOR_NAME}:${SPACEFX_VERSION}"
 
     info_log "...'${DATA_GENERATOR_NAME}' pushed to '${_registry_url}'"
 

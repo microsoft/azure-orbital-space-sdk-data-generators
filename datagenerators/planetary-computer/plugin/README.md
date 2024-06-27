@@ -1,1 +1,1 @@
-README doc for writting a position plugin
+README doc for planetary computer plugin

@@ -1,4 +1,4 @@
-# Planetary Computer Geotiff
+# Planetary Computer
 
 ## Optional Prerequisites
 1. Register for Planetary Computer Access:
