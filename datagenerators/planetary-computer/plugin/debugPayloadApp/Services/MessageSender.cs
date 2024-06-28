@@ -21,7 +21,8 @@ public class MessageSender : BackgroundService {
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        DateTime maxTimeToWait = DateTime.Now.Add(TimeSpan.FromSeconds(10));
+        // This is higher than normal to let the service build the datagenerator if it needs to
+        DateTime maxTimeToWait = DateTime.Now.Add(TimeSpan.FromSeconds(90));
 
         using (var scope = _serviceProvider.CreateScope()) {
             _logger.LogInformation("MessageSender running at: {time}", DateTimeOffset.Now);
