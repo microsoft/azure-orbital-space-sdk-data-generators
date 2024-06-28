@@ -11,8 +11,8 @@
 	"workspaceMount": "source=${localWorkspaceFolder}/datagenerators/planetary-computer/datagenerator,target=/workspace/planetary-computer-datagenerator,type=bind,consistency=cached",
 
 	"hostRequirements": {
-		"cpus": 4,
-		"memory": "12gb"
+		"cpus": 8,
+		"memory": "8gb"
 	},
 	// Configure tool-specific properties.
 	"customizations": {
