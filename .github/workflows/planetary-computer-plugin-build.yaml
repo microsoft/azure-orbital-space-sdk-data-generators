@@ -1,0 +1,53 @@
+name: planetary-computer-plugin-build
+
+on: 
+    workflow_dispatch:
+    push:
+        branches:
+         - main
+        paths:
+        - 'datagenerators/planetary-computer/plugin/**'
+        - '.github/workflows/planetary-computer-plugin-build.yaml'
+
+jobs:
+  build-plugin-planetary-computer-amd64:
+    permissions:
+      contents: read
+      packages: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    with:
+      APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
+      OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
+      PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
+      PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: planetary-computer-vth-plugin.json.spacefx_plugin
+      ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
+      WORKFLOW_AGENT: ubuntu-latest
+      ARCHITECTURE: amd64
+      DEV_CONTAINER_JSON: .devcontainer/planetary-computer-vth-plugin/devcontainer.json
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
+
+  build-plugin-planetary-computer-arm64:
+    permissions:
+      contents: read
+      packages: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    with:
+      APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
+      OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
+      PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
+      PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: planetary-computer-vth-plugin.json.spacefx_plugin
+      ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
+      WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
+      ARCHITECTURE: arm64
+      DEV_CONTAINER_JSON: .devcontainer/planetary-computer-vth-plugin/devcontainer.json
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
