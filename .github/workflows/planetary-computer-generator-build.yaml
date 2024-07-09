@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     push:
         branches:
-         - km/add_action
+         - main
         paths:
         - 'datagenerators/planetary-computer/datagenerator/**'
         - '.github/workflows/planetary-computer-generator-build.yaml'
