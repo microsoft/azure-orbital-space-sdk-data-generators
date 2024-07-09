@@ -15,7 +15,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/data-generator-build.yaml@km/add_data_generator
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/data-generator-build.yaml@main
     with:
       REGISTRY: ghcr.io
       APP_NAME: datagenerator-planetary-computer
@@ -37,7 +37,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/data-generator-build.yaml@km/add_data_generator
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/data-generator-build.yaml@main
     with:
       REGISTRY: ghcr.io
       APP_NAME: datagenerator-planetary-computer
