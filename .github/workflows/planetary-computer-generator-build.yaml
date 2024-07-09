@@ -26,7 +26,7 @@ jobs:
       REPO_DIR: ./datagenerators/planetary-computer/datagenerator
       YAML_STAGING_DIRECTORY: /var/spacedev/yamls
       YAML_FOLDER_PATH: ./datagenerators/planetary-computer/datagenerator/k3s
-      YAML_FILE_NAMEZ: datagenerator-planetary-computer.yaml
+      YAML_FILE_NAME: datagenerator-planetary-computer.yaml
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
       REPO_DIR: ./datagenerators/planetary-computer/datagenerator
       YAML_STAGING_DIRECTORY: /var/spacedev/yamls
       YAML_FOLDER_PATH: ./datagenerators/planetary-computer/datagenerator/k3s
-      YAML_FILE_NAMEZ: datagenerator-planetary-computer.yaml
+      YAML_FILE_NAME: datagenerator-planetary-computer.yaml
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
