@@ -44,8 +44,8 @@ jobs:
       PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
       PLUGIN_CONFIG_FILE_NAME: planetary-computer-vth-plugin.json.spacefx_plugin
       ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
-      WORKFLOW_AGENT: ubuntu-latest
-      ARCHITECTURE: amd64
+      WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
+      ARCHITECTURE: arm64
       DEV_CONTAINER_JSON: .devcontainer/planetary-computer-vth-plugin/devcontainer.json
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
