@@ -21,11 +21,11 @@ jobs:
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
       PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
       PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: planetary-computer-vth-plugin.json.spacefx_plugin
       ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
       WORKFLOW_AGENT: ubuntu-latest
       ARCHITECTURE: amd64
       DEV_CONTAINER_JSON: .devcontainer/planetary-computer-vth-plugin/devcontainer.json
-      ANNOTATION_CONFIG: azure-orbital-space-sdk-data-generators.yaml
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
@@ -42,11 +42,11 @@ jobs:
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
       PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
       PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: planetary-computer-vth-plugin.json.spacefx_plugin
       ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
       WORKFLOW_AGENT: ubuntu-latest
       ARCHITECTURE: amd64
       DEV_CONTAINER_JSON: .devcontainer/planetary-computer-vth-plugin/devcontainer.json
-      ANNOTATION_CONFIG: azure-orbital-space-sdk-data-generators.yaml
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
