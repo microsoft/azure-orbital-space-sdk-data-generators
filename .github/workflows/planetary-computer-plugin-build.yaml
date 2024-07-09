@@ -15,7 +15,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@km/add_data_generator
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
     with:
       APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
@@ -36,7 +36,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@km/add_data_generator
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
     with:
       APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
