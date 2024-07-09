@@ -21,8 +21,8 @@ jobs:
       ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
       WORKFLOW_AGENT: ubuntu-latest
       ARCHITECTURE: amd64
-      DOCKER_FILE: /datagenerators/planetary-computer/datagenerator/Dockerfiles/Dockerfile
-      REPO_DIR: /datagenerators/planetary-computer/datagenerator
+      DOCKER_FILE: ./datagenerators/planetary-computer/datagenerator/Dockerfiles/Dockerfile
+      REPO_DIR: ./datagenerators/planetary-computer/datagenerator
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
@@ -40,8 +40,8 @@ jobs:
       ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
       WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
       ARCHITECTURE: arm64
-      DOCKER_FILE: /datagenerators/planetary-computer/datagenerator/Dockerfiles/Dockerfile
-      REPO_DIR: /datagenerators/planetary-computer/datagenerator
+      DOCKER_FILE: ./datagenerators/planetary-computer/datagenerator/Dockerfiles/Dockerfile
+      REPO_DIR: ./datagenerators/planetary-computer/datagenerator
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
