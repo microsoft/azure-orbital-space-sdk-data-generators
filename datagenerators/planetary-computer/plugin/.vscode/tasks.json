@@ -13,8 +13,7 @@
             "command": "/bin/bash",
             "type": "shell",
             "dependsOn": [
-                "build",
-                "check-datagenerator"
+                "build"
             ],
             "dependsOrder": "sequence",
             "args": [
@@ -24,24 +23,6 @@
             ],
             "presentation": {
                 "echo": true,
-                "reveal": "never",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": false,
-                "clear": false
-            }
-        },
-        {
-            "label": "check-datagenerator",
-            "isBackground": true,
-            "command": "/bin/bash",
-            "type": "shell",
-            "dependsOrder": "sequence",
-            "args": [
-                "/workspace/planetary-computer-vth-plugin/.vscode/check-datagenerator.sh"
-            ],
-            "presentation": {
-                "echo": false,
                 "reveal": "never",
                 "focus": false,
                 "panel": "shared",
