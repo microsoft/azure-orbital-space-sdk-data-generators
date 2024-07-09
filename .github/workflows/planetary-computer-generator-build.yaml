@@ -5,8 +5,8 @@ on:
     push:
         branches:
          - km/add_action
-        paths:
-        - 'datagenerators/planetary-computer/datagenerator/**'
+        # paths:
+        # - 'datagenerators/planetary-computer/datagenerator/**'
 
 jobs:
   build-datagenerator-planetary-computer-amd64:
