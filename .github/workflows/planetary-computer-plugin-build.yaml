@@ -17,7 +17,7 @@ jobs:
 
     uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@km/add_data_generator
     with:
-      APP_PROJECT: ./datagenerators/planetary-computer/plugin/src/planetary-computer-vth-plugin.csproj
+      APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
       PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
       PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
@@ -38,7 +38,7 @@ jobs:
 
     uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@km/add_data_generator
     with:
-      APP_PROJECT: ./datagenerators/planetary-computer/plugin/src/planetary-computer-vth-plugin.csproj
+      APP_PROJECT: ./src/planetary-computer-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/planetary-computer-vth-plugin/output
       PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
       PLUGIN_FILE_NAME: planetary-computer-vth-plugin.dll
