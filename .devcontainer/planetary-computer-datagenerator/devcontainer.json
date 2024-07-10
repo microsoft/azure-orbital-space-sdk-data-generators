@@ -40,6 +40,5 @@
 			}
 		}
 	},
-	"remoteUser": "root",
-	"postStartCommand": ""
+	"remoteUser": "root"
 }

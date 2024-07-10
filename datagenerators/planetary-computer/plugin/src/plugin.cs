@@ -200,7 +200,7 @@ public class PlanetaryComputerVTHPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Pl
                     FileName = calculatedFileName
                 });
                 // Create and send a link request for the downloaded file
-                await createAndSendLinkRequest(taskingRequest.RequestHeader.AppId, calculatedFileName, sensorData.ResponseHeader.CorrelationId);
+                await createAndSendLinkRequest(taskingRequest, calculatedFileName, sensorData.ResponseHeader.CorrelationId);
             }
         } catch (Exception ex) {
             // If an exception occurs, update the response status and message
@@ -218,13 +218,13 @@ public class PlanetaryComputerVTHPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Pl
     }
 
     // Define an asynchronous method to create and send a link request
-    private async Task createAndSendLinkRequest(string appId, string fileName, string correlationId) {
+    private async Task createAndSendLinkRequest(TaskingRequest taskingRequest, string fileName, string correlationId) {
         // Generate a new tracking ID
         var trackingId = Guid.NewGuid().ToString();
 
         // Initialize a new link request with specified parameters
         var linkRequest = new LinkRequest {
-            DestinationAppId = appId, // Set the destination application ID
+            DestinationAppId = taskingRequest.RequestHeader.OriginAppId, // Set the destination application ID to be the origin application ID
             ExpirationTime = Timestamp.FromDateTime(DateTime.UtcNow.AddHours(1)), // Set the expiration time to 1 hour from now
             FileName = fileName, // Set the file name to be linked
             LeaveSourceFile = false, // Indicate that the source file should not be left after linking
