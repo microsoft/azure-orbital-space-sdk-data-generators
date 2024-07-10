@@ -64,13 +64,18 @@ Using the Planetary Computer Data Generator requires the Plugin, the Plguin Conf
     # Put the dll, spacefx_config, and yaml in the destination directories
     sudo mkdir -p /var/spacedev/plugins/vth
     sudo mkdir -p /var/spacedev/yamls/deploy
+    sudo mkdir -p /var/spacedev/protos/datagenerator/planetary-computer
+
     sudo cp /var/spacedev/tmp/planetary-computer-vth-plugin/output/amd64/app/planetary-computer-vth-plugin.dll /var/spacedev/plugins/vth/
     sudo cp /var/spacedev/tmp/planetary-computer-vth-plugin/output/amd64/app/planetary-computer-vth-plugin.json.spacefx_plugin /var/spacedev/plugins/vth/
     sudo cp ${PWD}/datagenerators/planetary-computer/datagenerator/k3s/datagenerator-planetary-computer.yaml /var/spacedev/yamls/deploy/
+    sudo cp ${PWD}/datagenerators/planetary-computer/plugin/src/Protos/PlanetaryComputer.proto /var/spacedev/protos/datagenerator/planetary-computer/
+
 
     # Push dll, spacefx_plugin, and yaml files to the container registry
     /var/spacedev/build/push_build_artifact.sh --artifact /var/spacedev/plugins/vth/planetary-computer-vth-plugin.dll --annotation-config azure-orbital-space-sdk-data-generators.yaml --architecture amd64 --artifact-version 0.11.0
     /var/spacedev/build/push_build_artifact.sh --artifact /var/spacedev/plugins/vth/planetary-computer-vth-plugin.json.spacefx_plugin --annotation-config azure-orbital-space-sdk-data-generators.yaml --architecture amd64 --artifact-version 0.11.0
     /var/spacedev/build/push_build_artifact.sh --artifact /var/spacedev/yamls/deploy/datagenerator-planetary-computer.yaml --annotation-config azure-orbital-space-sdk-data-generators.yaml --architecture amd64 --artifact-version 0.11.0
+    /var/spacedev/build/push_build_artifact.sh --artifact /var/spacedev/protos/datagenerator/planetary-computer/PlanetaryComputer.proto --annotation-config azure-orbital-space-sdk-data-generators.yaml --architecture amd64 --artifact-version 0.11.0
     ```
 
