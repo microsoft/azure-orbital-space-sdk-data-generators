@@ -41,5 +41,5 @@
 		}
 	},
 	"remoteUser": "root",
-	"postStartCommand": ""
+	"postStartCommand": "bash /workspace/planetary-computer-datagenerator/devcontainer_postStart.sh"
 }
