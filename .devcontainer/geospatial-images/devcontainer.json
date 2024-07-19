@@ -1,0 +1,45 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/dotnet
+{
+	"name": "geospatial-images-datagenerator",
+	"image": "mcr.microsoft.com/devcontainers/python:1-3.10-bullseye",
+	"runArgs": [
+		"--name",
+		"geospatial-images-datagenerator"
+	],
+    "workspaceFolder": "/workspace/geospatial-images-datagenerator",
+	"workspaceMount": "source=${localWorkspaceFolder}/datagenerators/geospatial-images/datagenerator,target=/workspace/geospatial-images-datagenerator,type=bind,consistency=cached",
+
+	"hostRequirements": {
+		"cpus": 8,
+		"memory": "8gb"
+	},
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+				"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+				"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+				"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+				"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+				"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+				"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+				"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+				"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+				"python.testing.pytestPath": "/usr/local/py-utils/bin/pytest"
+			}
+		}
+	},
+	"remoteUser": "root",
+	"postStartCommand": "bash /workspace/geospatial-images-datagenerator/devcontainer_postStart.sh"
+}
