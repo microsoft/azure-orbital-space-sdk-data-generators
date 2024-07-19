@@ -402,4 +402,4 @@ FodyWeavers.xsd
 
 # poetry lock files
 
-*.lock
+*/poetry.lock
