@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datagenerator-geospatial-images
+  namespace: platformsvc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: datagenerator-geospatial-images
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datagenerator-geospatial-images
+  namespace: platformsvc
+  labels:
+    app: datagenerator-geospatial-images
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datagenerator-geospatial-images
+  template:
+    metadata:
+      labels:
+        app: datagenerator-geospatial-images
+      annotations:
+    spec:
+      containers:
+      - name: datagenerator-geospatial-images
+        image: registry.spacefx.local:5000/datagenerator-geospatial-images:0.11.0-nightly
+        imagePullPolicy: IfNotPresent
+        resources:
+            limits:
+              memory: 7Gi
+            requests:
+              memory: 50Mi
