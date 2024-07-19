@@ -74,9 +74,3 @@ if you are unfamilar with what `crs` and `bbox` your image utilizes, go ahead co
     }
 }
 ```
-
-
-## Build
-
-TODO:
-```
