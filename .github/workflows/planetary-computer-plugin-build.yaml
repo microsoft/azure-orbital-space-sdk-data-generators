@@ -30,8 +30,8 @@ jobs:
       PROTO_FOLDER_PATH: ./datagenerators/planetary-computer/plugin/src/Protos
       PROTO_FILE_NAME: PlanetaryComputer.proto
     secrets:
-      GIT_HUB_USER_NAME: ${{ secrets.TEMP_GITHUB_USERNAME }}
-      GIT_HUB_USER_TOKEN: ${{ secrets.TEMP_WORKFLOW_TOKEN }}
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
       SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
 
   build-plugin-planetary-computer-arm64:
@@ -54,6 +54,6 @@ jobs:
       PROTO_FOLDER_PATH: ./datagenerators/planetary-computer/plugin/src/Protos
       PROTO_FILE_NAME: PlanetaryComputer.proto
     secrets:
-      GIT_HUB_USER_NAME: ${{ secrets.TEMP_GITHUB_USERNAME }}
-      GIT_HUB_USER_TOKEN: ${{ secrets.TEMP_WORKFLOW_TOKEN }}
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
       SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
