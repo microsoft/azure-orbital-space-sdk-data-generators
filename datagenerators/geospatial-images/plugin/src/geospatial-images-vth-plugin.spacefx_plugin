@@ -1,0 +1,10 @@
+{
+    "pluginFile": "geospatial-images-vth-plugin.dll",
+    "pluginName": "geospatial-images-vth-plugin",
+    "targetService": "vth",
+    "plugin_permissions": "ALL",
+    "core_permissions": "ALL",
+    "build_artifacts": [],
+    "configuration": {
+    }
+}
