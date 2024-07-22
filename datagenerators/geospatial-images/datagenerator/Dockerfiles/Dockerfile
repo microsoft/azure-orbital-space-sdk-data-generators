@@ -20,4 +20,4 @@ COPY ./README.md /workspace/${SERVICE_NAME}/README.md
 
 RUN pip3 install .
 
-ENTRYPOINT ["python3", "src/image_provider/main.py"]
+ENTRYPOINT ["python3", "src/datagenerator_geospatial_images/main.py"]
