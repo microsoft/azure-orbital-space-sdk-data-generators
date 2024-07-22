@@ -3,6 +3,8 @@ name: geospatial-images-dg-build
 on: 
     workflow_dispatch:
     push:
+        branches:
+         - main
         paths:
         - 'datagenerators/geospatial-images/datagenerator/**'
         - '.github/workflows/geospatial-images-generator-build.yaml'
