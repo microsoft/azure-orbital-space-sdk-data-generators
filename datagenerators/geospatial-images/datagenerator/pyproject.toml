@@ -19,6 +19,7 @@ waitress = "^2.1.2"
 pyproj = "^3.5.0"
 grpcio-tools = "^1.26.0"
 grpcio = "^1.26.0"
+numpy = "^1.21"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"

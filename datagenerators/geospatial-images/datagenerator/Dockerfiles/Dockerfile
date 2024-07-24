@@ -1,7 +1,7 @@
 ARG PYTHON_CONTAINER_VARIANT="3.10-bullseye"
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-${PYTHON_CONTAINER_VARIANT}
 
-ARG SERVICE_NAME="datagenerator-geospatial-images"
+ARG SERVICE_NAME="geospatial-images-datagenerator"
 ENV SERVICE_NAME=$SERVICE_NAME
 ENV PYTHONUNBUFFERED 1
 
