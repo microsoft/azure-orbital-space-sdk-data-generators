@@ -2,11 +2,11 @@
 using Microsoft.Azure.SpaceFx.MessageFormats.HostServices.Position;
 using Microsoft.Azure.SpaceFx.MessageFormats.HostServices.Sensor;
 
-namespace Microsoft.Azure.SpaceFx.PlatformServices.MessageTranslationService.Plugins;
+namespace Microsoft.Azure.SpaceFx.VTH.Plugins;
 public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.PluginBase {
 
     // HelloWorld sensor is a simple request/reply sensor to validate the direct path scenario works
-    const string SENSOR_ID = "GeospatialImages";
+    public const string SENSOR_ID = "GeospatialImages";
     private readonly string OUTPUT_DIR = "";
     private readonly string IMAGES_DIR = "";
     private readonly HttpClient HTTP_CLIENT;
@@ -74,6 +74,10 @@ public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Plugin
 
     public override Task<LinkResponse?> LinkResponse(LinkResponse? input_response) => Task.Run(() => {
         Logger.LogInformation("{pluginName}: received and processed a LinkResponse Event", nameof(GeospatialImagesPlugin));
+        if (input_response == null) return input_response;
+
+        LinkRequestIDs.TryRemove(input_response.ResponseHeader.CorrelationId, out _);
+
         return (input_response ?? null);
     });
 
@@ -99,7 +103,7 @@ public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Plugin
     });
 
     public override Task<SensorData?> SensorData(SensorData? input_request) => Task.Run(() => {
-        Logger.LogInformation("{pluginName}: Plugin received and processed a SensorData Event", nameof(GeospatialImagesPlugin ));
+        Logger.LogInformation("{pluginName}: Plugin received and processed a SensorData Event", nameof(GeospatialImagesPlugin));
         return (input_request ?? null);
     });
 
@@ -110,7 +114,6 @@ public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Plugin
 
         input_response.ResponseHeader.Status = StatusCodes.Successful;
         input_response.Sensors.Add(new SensorsAvailableResponse.Types.SensorAvailable() { SensorID = SENSOR_ID });
-        input_response.Sensors.Add(new SensorsAvailableResponse.Types.SensorAvailable() { SensorID = SENSOR_TEMPERATURE_ID });
 
 
         return (input_request, input_response);
@@ -136,19 +139,30 @@ public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Plugin
     });
 
     public override Task<(TaskingRequest?, TaskingResponse?)> TaskingRequest(TaskingRequest? input_request, TaskingResponse? input_response) => Task.Run(() => {
-        Logger.LogInformation("{pluginName}: Plugin received and processed a TaskingRequest Event", nameof(GeospatialImagesPlugin));
-        if (input_request == null || input_response == null) return (input_request, input_response);
+        Logger.LogInformation("{pluginName}: {methodRequest} received tasking request.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(TaskingRequest), input_request.RequestHeader.TrackingId, input_request.RequestHeader.CorrelationId);
+        if (input_request == null) return (input_request, input_response);
+        if (!input_request.SensorID.Equals(SENSOR_ID, StringComparison.InvariantCultureIgnoreCase)) return (input_request, input_response); // This is not the plugin you're looking for
+
+
+
+        Logger.LogTrace("{pluginName}: {methodRequest} Adding request to queue.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(TaskingRequest), input_request.RequestHeader.TrackingId, input_request.RequestHeader.CorrelationId);
+
+        IMAGE_QUEUE.Enqueue(input_request);
+
 
         // Flip it to success
         input_response.ResponseHeader.Status = StatusCodes.Successful;
         input_response.SensorID = input_request.SensorID;
 
-        // Add the client ID to the list so we can direct send it Sensor Data
-        if (!CLIENT_IDS.Contains(input_request.RequestHeader.AppId))
-            CLIENT_IDS.Add(input_request.RequestHeader.AppId);
 
-        // Flip it to success
-        input_response.ResponseHeader.Status = StatusCodes.Successful;
+        Logger.LogDebug("{pluginName}: {methodRequest} Setting {image_response_type} status to {status}.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(TaskingRequest), input_response.GetType().Name, input_response.ResponseHeader.Status, input_request.RequestHeader.TrackingId, input_request.RequestHeader.CorrelationId);
+
+        Logger.LogDebug("{pluginName}: {methodRequest} Returning {image_response_type} to VTH.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(TaskingRequest), input_response.GetType().Name, input_request.RequestHeader.TrackingId, input_request.RequestHeader.CorrelationId);
+
         return (input_request, input_response);
     });
 
@@ -156,4 +170,144 @@ public class GeospatialImagesPlugin : Microsoft.Azure.SpaceFx.VTH.Plugins.Plugin
         Logger.LogInformation("{pluginName}: Plugin received and processed a SensorsAvailableRequest Event", nameof(GeospatialImagesPlugin));
         return (input_response ?? null);
     });
+
+    // Helper Functions:
+    private async Task<SensorData> processImageRequest(TaskingRequest taskingRequest) {
+        GeospatialImages.EarthImageRequest imageRequest;
+        GeospatialImages.EarthImageResponse imageResponse;
+        string fileName;
+
+        SensorData sensorData = new() {
+            ResponseHeader = new ResponseHeader() {
+                TrackingId = Guid.NewGuid().ToString(),
+                CorrelationId = taskingRequest.RequestHeader.CorrelationId
+            },
+            DestinationAppId = taskingRequest.RequestHeader.AppId,
+            TaskingTrackingId = taskingRequest.RequestHeader.TrackingId,
+            SensorID = SENSOR_ID
+        };
+
+        // Unpack the request
+        try {
+            Logger.LogTrace("{pluginName}: {methodRequest} Extracting {embeddedMessageType} from {messageType}.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), nameof(GeospatialImages.EarthImageRequest), nameof(TaskingRequest), taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            imageRequest = taskingRequest.RequestData.Unpack<GeospatialImages.EarthImageRequest>();
+
+            Logger.LogDebug("{pluginName}: {methodRequest} Successfully extracted {embeddedMessageType} from {messageType}.  Request Object: {requestObject}  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), nameof(GeospatialImages.EarthImageRequest), nameof(TaskingRequest), Google.Protobuf.JsonFormatter.Default.Format(imageRequest), taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+        } catch (Exception ex) {
+            Logger.LogError("{pluginName}: {methodRequest} Failed to extract {embeddedMessageType} from {messageType}.  Error: {errMsg}  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), nameof(GeospatialImages.EarthImageRequest), nameof(TaskingRequest), ex.Message, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            sensorData.ResponseHeader.Status = StatusCodes.GeneralFailure;
+            sensorData.ResponseHeader.Message = string.Format($"{nameof(GeospatialImagesPlugin)}: {nameof(TaskingRequest)} Failed to extract {nameof(GeospatialImages.EarthImageRequest)} from {nameof(TaskingRequest)}.  Error: {ex.Message}");
+            return sensorData;
+        }
+
+        // Query the Geotiff Processor Tool
+        try {
+            Logger.LogTrace("{pluginName}: {methodRequest} Querying tool-image-provider computer.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            string imageType = imageRequest.ImageType.ToString().ToLower();
+
+            Logger.LogDebug("{pluginName}: {methodRequest} requesting {imageType}.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                nameof(GeospatialImagesPlugin), nameof(processImageRequest), imageType, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+
+            // var datagenerator_url = string.Format("http://datagenerator-geospatial-images.svc.cluster.local:8080/get_geotiff?lat={0}&lon={1}", imageRequest.LineOfSight.Latitude.ToString(), imageRequest.LineOfSight.Longitude.ToString());
+            var datagenerator_url = string.Format("http://datagenerator-geospatial-images.platformsvc.svc.cluster.local:8080/get_{0}?lat={1}&lon={2}", imageType, imageRequest.LineOfSight.Latitude.ToString(), imageRequest.LineOfSight.Longitude.ToString());
+
+
+            Logger.LogDebug("{pluginName}: {methodRequest} Query: {datagenerator_url} .  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), datagenerator_url, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            fileName = await downloadFile(url: datagenerator_url, filePath: Path.Combine(OUTPUT_DIR, taskingRequest.RequestHeader.TrackingId));
+
+
+        } catch (Exception ex) {
+            Logger.LogError("{pluginName}: {methodRequest} Failed to query datagenerator-geospatial-images.  Error: {errMsg}  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                    nameof(GeospatialImagesPlugin), nameof(processImageRequest), ex.Message, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            sensorData.ResponseHeader.Status = MessageFormats.Common.StatusCodes.GeneralFailure;
+            sensorData.ResponseHeader.Message = string.Format($"{nameof(GeospatialImagesPlugin)}: {nameof(TaskingRequest)} Failed to extract {nameof(GeospatialImages.EarthImageRequest)} from {nameof(TaskingRequest)}.  Error: {ex.Message}");
+            return sensorData;
+        }
+
+        // Build the sensor data message to return to the calling method
+        imageResponse = new() {
+            LineOfSight = imageRequest.LineOfSight,
+            Filename = fileName
+        };
+
+        DateTime maxTimeToWaitForFile = DateTime.Now.Add(TimeSpan.FromSeconds(30));
+
+        Logger.LogDebug("{pluginName}: {methodRequest} waiting for {filePath}.  (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+            nameof(GeospatialImagesPlugin), nameof(processImageRequest), Path.Combine(OUTPUT_DIR, imageResponse.Filename), taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+        while (!File.Exists(Path.Combine(OUTPUT_DIR, imageResponse.Filename)) && DateTime.Now <= maxTimeToWaitForFile) {
+            await Task.Delay(100);
+        }
+
+
+        if (File.Exists(Path.Combine(OUTPUT_DIR, imageResponse.Filename))) {
+            Logger.LogInformation("{pluginName}: {methodRequest} Found file at '{filePath}'.  Sending link request to '{destinationAppId}'. (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                   nameof(GeospatialImagesPlugin), nameof(processImageRequest), Path.Combine(OUTPUT_DIR, imageResponse.Filename), taskingRequest.RequestHeader.AppId, taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+            LinkRequest linkRequest = new() {
+                DestinationAppId = taskingRequest.RequestHeader.AppId,
+                ExpirationTime = Timestamp.FromDateTime(DateTime.UtcNow.AddHours(1)),
+                FileName = fileName,
+                LeaveSourceFile = false,
+                LinkType = LinkRequest.Types.LinkType.App2App,
+                Priority = Priority.Medium,
+                RequestHeader = new() {
+                    TrackingId = Guid.NewGuid().ToString(),
+                    CorrelationId = sensorData.ResponseHeader.CorrelationId
+                }
+            };
+
+            if (taskingRequest.RequestHeader.Metadata.FirstOrDefault((_item) => _item.Key == "SOURCE_PAYLOAD_APP_ID").Value != null) {
+                string sourcePayloadAppID = taskingRequest.RequestHeader.Metadata.FirstOrDefault((_item) => _item.Key == "SOURCE_PAYLOAD_APP_ID").Value;
+                linkRequest.RequestHeader.Metadata.Add("SOURCE_PAYLOAD_APP_ID", sourcePayloadAppID);
+            }
+
+            LinkRequestIDs.TryAdd(sensorData.ResponseHeader.CorrelationId, linkRequest);
+            await Core.DirectToApp(appId: $"hostsvc-{nameof(HostServices.Link)}", message: linkRequest);
+
+        } else {
+            sensorData.ResponseHeader.Status = StatusCodes.Timeout;
+            sensorData.ResponseHeader.Message = $"Timeout while waiting for file to land in {OUTPUT_DIR}.  Check the tool-geotiff-processor pod logs for errors and troubleshoot";
+        }
+
+        Logger.LogInformation("{pluginName}: {methodRequest} Returning generated sensor data. (TrackingId: {trackingId}, CorrelationId: {correlationId})",
+                   nameof(GeospatialImagesPlugin), nameof(processImageRequest), taskingRequest.RequestHeader.TrackingId, taskingRequest.RequestHeader.CorrelationId);
+
+        sensorData.ResponseHeader.Status = StatusCodes.Successful;
+        sensorData.Data = Any.Pack(imageResponse);
+
+        return sensorData;
+    }
+
+    private async Task<string> downloadFile(string url, string filePath) {
+        using (HttpResponseMessage response = await HTTP_CLIENT.GetAsync(url, HttpCompletionOption.ResponseHeadersRead)) {
+            response.EnsureSuccessStatusCode();
+            string contentType = response.Content.Headers.ContentType.MediaType.Split('/')[1];
+            string fullFilePath = filePath + "." + contentType;
+
+
+            using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync()) {
+                using (Stream streamToWriteTo = File.Open(fullFilePath, FileMode.Create)) {
+                    await streamToReadFrom.CopyToAsync(streamToWriteTo);
+                    streamToWriteTo.Close();
+                }
+                streamToReadFrom.Close();
+            }
+            response.Dispose();
+
+            return Path.GetFileName(fullFilePath);
+        }
+    }
 }

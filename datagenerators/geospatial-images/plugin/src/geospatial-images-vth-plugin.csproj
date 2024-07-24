@@ -10,6 +10,21 @@
     <PackageReference Include="Microsoft.Azure.SpaceSDK.Core" Version="$([System.IO.File]::ReadAllText('/spacefx-dev/config/spacefx_version'))" />
     <PackageReference Include="Microsoft.Azure.SpaceSDK.VTH.Plugins" Version="$([System.IO.File]::ReadAllText('/spacefx-dev/config/spacefx_version'))" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.Tools" Version="2.57.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="/workspace/geospatial-images-vth-plugin/src/Protos/GeospatialImages.proto" ProtoRoot="/workspace/geospatial-images-vth-plugin/src/Protos/" GrpcServices="Public" Access="Public" ProtoCompile="True" CompileOutputs="True" OutputDir="obj/Debug/net6.0/"></Protobuf>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <GenerateRuntimeConfigurationFiles>False</GenerateRuntimeConfigurationFiles>
+    <GenerateDependencyFile>False</GenerateDependencyFile>
+  </PropertyGroup>
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Copy SourceFiles="geospatial-images-vth-plugin.json.spacefx_plugin" DestinationFolder="$(OutDir)" />
   </Target>

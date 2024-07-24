@@ -41,16 +41,16 @@ public class MessageSender : BackgroundService {
                 throw new Exception($"Service '{_hostSvcAppId}' did not come online in time.");
             }
 
-            // Hostsvc-Position endpoints
-            await UpdatePosition();
-            await GetCurrentPosition();
+            // // Hostsvc-Position endpoints
+            // await UpdatePosition();
+            // await GetCurrentPosition();
 
-            // Hostsvc-Link endpoints
-            await SendFileRootDirectory();
+            // // Hostsvc-Link endpoints
+            // await SendFileRootDirectory();
 
-            // Hostsvc-Logging endpoints
-            await SendTelemetryMetric();
-            await SendLogMessage();
+            // // Hostsvc-Logging endpoints
+            // await SendTelemetryMetric();
+            // await SendLogMessage();
 
             // Hostsvc-Sensor endpoints
             RegisterForSensorData();
@@ -291,7 +291,12 @@ public class MessageSender : BackgroundService {
         // Register a callback event to catch the Sensor Data
         void SensorDataEventHandler(object? _, SensorData _response) {
             _logger.LogInformation($"Received Sensor Data: '{_response.SensorID}'");
-            // Do something with data
+            _logger.LogInformation($"SensorData Status: {_response.ResponseHeader.Status}. TrackingID: {_response.ResponseHeader.TrackingId}");
+
+            if (!_response.SensorID.Equals("GeospatialImages", StringComparison.InvariantCultureIgnoreCase)) return; // This is not the sensor you're looking for
+
+            Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageResponse? earthImageResponse = _response.Data.Unpack<Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageResponse>();
+            _logger.LogInformation($"...GeospatialImages.EarthImageResponse unpacked.  datagenerator-geospatial-images output:'{earthImageResponse.Filename}'.");
         }
 
         MessageHandler<SensorData>.MessageReceivedEvent += SensorDataEventHandler;
@@ -331,8 +336,11 @@ public class MessageSender : BackgroundService {
 
         if (response == null) throw new TimeoutException($"Failed to hear {nameof(response)} after {MAX_TIMESPAN_TO_WAIT_FOR_MSG}.  Please check that {_hostSvcAppId} is deployed");
 
-        _logger.LogInformation($"'{request.GetType().Name}' request received.  Status: '{response.ResponseHeader.Status}' (TrackingId: '{request.RequestHeader.TrackingId}')");
 
+        _logger.LogInformation($"'{request.GetType().Name}' request received.  Status: '{response.ResponseHeader.Status}' (TrackingId: '{request.RequestHeader.TrackingId}')");
+        _logger.LogInformation($"SensorsAvailableResponse Heard from {response.ResponseHeader.AppId}");
+        _logger.LogInformation($"{response.GetType().Name} Sensors ({response.Sensors.Count}): ");
+        response.Sensors.ToList().ForEach((sensor) => Console.WriteLine($"...Sensor '{sensor.SensorID}'..."));
     }
 
     private async Task SendTaskingPreCheckRequest() {
@@ -373,11 +381,26 @@ public class MessageSender : BackgroundService {
     private async Task SendTaskingRequest() {
         DateTime maxTimeToWait = DateTime.Now.Add(TimeSpan.FromSeconds(10));
         TaskingResponse? response = null;
+
+        var trackingId = Guid.NewGuid().ToString();
+
+        Microsoft.Azure.SpaceFx.GeospatialImages.EarthLineOfSight lineOfSight = new Microsoft.Azure.SpaceFx.GeospatialImages.EarthLineOfSight {
+            Latitude = (float) 47.6062,
+            Longitude = (float) -122.3321
+        };
+
+        Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageRequest imageRequest = new Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageRequest {
+            LineOfSight = lineOfSight,
+            ImageType = Microsoft.Azure.SpaceFx.GeospatialImages.ImageType.Geotiff
+        };
+
         TaskingRequest request = new() {
-            RequestHeader = new() {
-                TrackingId = Guid.NewGuid().ToString(),
-                CorrelationId = Guid.NewGuid().ToString()
-            }
+            RequestHeader = new RequestHeader() {
+                TrackingId = trackingId,
+                CorrelationId = trackingId
+            },
+            SensorID = Microsoft.Azure.SpaceFx.VTH.Plugins.GeospatialImagesPlugin.SENSOR_ID,
+            RequestData = Google.Protobuf.WellKnownTypes.Any.Pack(imageRequest)
         };
 
         _logger.LogInformation($"Sending '{request.GetType().Name}' request (TrackingId: '{request.RequestHeader.TrackingId}')");

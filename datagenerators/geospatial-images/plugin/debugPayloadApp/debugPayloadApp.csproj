@@ -10,4 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="/workspace/geospatial-images-vth-plugin/src/geospatial-images-vth-plugin.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+  </ItemGroup>
+
 </Project>

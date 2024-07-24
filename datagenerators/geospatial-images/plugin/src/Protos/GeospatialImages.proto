@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-option csharp_namespace = "Microsoft.Azure.SpaceFx.ImageProvider";
-package Microsoft.Azure.SpaceFx.ImageProvider;
+option csharp_namespace = "Microsoft.Azure.SpaceFx.GeospatialImages";
+package Microsoft.Azure.SpaceFx.GeospatialImages;
 
 enum ServiceEndpoints {
    health = 0;
