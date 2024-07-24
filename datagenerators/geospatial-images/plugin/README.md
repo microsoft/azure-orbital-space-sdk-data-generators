@@ -1,1 +1,1 @@
-README doc for writing a VTH plugin
+README doc for Geospatial Images plugin
