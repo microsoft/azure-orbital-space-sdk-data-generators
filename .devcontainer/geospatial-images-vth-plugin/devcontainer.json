@@ -13,8 +13,8 @@
 			"app_name": "geospatial-images-vth-plugin",
 			"app_type": "vth-plugin",
 			"addl_debug_shim_suffixes": "client",
-			// "pull_containers": "datagenerator-geospatial-images:0.11.0-nightly",
-			// "download_artifacts": "datagenerator-geospatial-images.yaml"
+			"pull_containers": "datagenerator-geospatial-images:0.11.0-nightly",
+			"download_artifacts": "datagenerator-geospatial-images.yaml"
 		}
 	},
 	"mounts": [
