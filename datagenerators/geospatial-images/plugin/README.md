@@ -1,0 +1,1 @@
+README doc for Geospatial Images plugin

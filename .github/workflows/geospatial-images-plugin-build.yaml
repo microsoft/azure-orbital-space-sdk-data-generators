@@ -1,0 +1,59 @@
+name: geospatial-images-plugin-build
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+         - main
+        paths:
+        - 'datagenerators/geospatial-images/plugin/**'
+        - '.github/workflows/geospatial-images-plugin-build.yaml'
+
+jobs:
+  build-plugin-geospatial-images-amd64:
+    permissions:
+      contents: read
+      packages: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    with:
+      APP_PROJECT: ./src/geospatial-images-vth-plugin.csproj
+      OUTPUT_DIR: /var/spacedev/tmp/geospatial-images-vth-plugin/output
+      PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
+      PLUGIN_FILE_NAME: geospatial-images-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: geospatial-images-vth-plugin.json.spacefx_plugin
+      ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
+      WORKFLOW_AGENT: ubuntu-latest
+      ARCHITECTURE: amd64
+      DEV_CONTAINER_JSON: .devcontainer/geospatial-images-vth-plugin/devcontainer.json
+      PROTO_STAGING_DIRECTORY: /var/spacedev/protos/datagenerator/geospatial-images
+      PROTO_FOLDER_PATH: ./datagenerators/geospatial-images/plugin/src/Protos
+      PROTO_FILE_NAME: GeospatialImages.proto
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.TEMP_GITHUB_USERNAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.TEMP_WORKFLOW_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
+
+  build-plugin-geospatial-images-arm64:
+    permissions:
+      contents: read
+      packages: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    with:
+      APP_PROJECT: ./src/geospatial-images-vth-plugin.csproj
+      OUTPUT_DIR: /var/spacedev/tmp/geospatial-images-vth-plugin/output
+      PLUGIN_STAGING_DIRECTORY: /var/spacedev/plugins/vth
+      PLUGIN_FILE_NAME: geospatial-images-vth-plugin.dll
+      PLUGIN_CONFIG_FILE_NAME: geospatial-images-vth-plugin.json.spacefx_plugin
+      ANNOTATION: azure-orbital-space-sdk-data-generators.yaml
+      WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
+      ARCHITECTURE: arm64
+      DEV_CONTAINER_JSON: .devcontainer/geospatial-images-vth-plugin/devcontainer.json
+      PROTO_STAGING_DIRECTORY: /var/spacedev/protos/datagenerator/geospatial-images
+      PROTO_FOLDER_PATH: ./datagenerators/geospatial-images/plugin/src/Protos
+      PROTO_FILE_NAME: GeospatialImages.proto
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.TEMP_GITHUB_USERNAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.TEMP_WORKFLOW_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}

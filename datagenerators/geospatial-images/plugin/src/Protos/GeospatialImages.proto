@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Microsoft.Azure.SpaceFx.GeospatialImages";
+package Microsoft.Azure.SpaceFx.GeospatialImages;
+
+enum ServiceEndpoints {
+   health = 0;
+   imageRequest = 1;
+}
+
+enum ImageType {
+    GEOTIFF = 0;
+    IMAGE = 1;
+}
+
+message EarthLineOfSight {
+   float Latitude = 1;
+   float Longitude = 2;
+}
+
+message EarthImageRequest {
+   EarthLineOfSight lineOfSight = 1;
+   ImageType imageType= 2;
+}
+
+message EarthImageResponse {
+   EarthLineOfSight lineOfSight = 1;
+   google.protobuf.Timestamp timestamp = 2;
+   string filename = 3;
+}
