@@ -122,19 +122,58 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "reset-debugshim-test-client",
-            "isBackground": true,
+            "label": "deploy-debugshim-integrationTest",
+            "isBackground": false,
             "command": "/bin/bash",
             "type": "shell",
+            "dependsOn": [
+                "build-integrationTest"
+            ],
             "dependsOrder": "sequence",
             "args": [
-                "/spacefx-dev/debugShim-reset.sh",
+                "/spacefx-dev/debugShim-deploy.sh",
                 "--debug_shim",
-                "${DEBUG_SHIM_CLIENT}",
-                "--skip-pod-wait"
+                "${DEBUG_SHIM_CLIENT}"
             ],
             "presentation": {
-                "echo": false,
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "build-integrationTest",
+            "command": "dotnet",
+            "type": "process",
+            "dependsOn": "pause-processing",
+            "args": [
+                "build",
+                "${workspaceFolder}/test/integrationTests/integrationTests.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+                "--property:Debug=portable"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "deploy-debugshim-integrationTest-host",
+            "isBackground": false,
+            "command": "/bin/bash",
+            "type": "shell",
+            "dependsOn": [
+                "build"
+            ],
+            "dependsOrder": "sequence",
+            "args": [
+                "/spacefx-dev/debugShim-deploy.sh",
+                "--debug_shim",
+                "${DEBUG_SHIM_HOST}"
+            ],
+            "presentation": {
+                "echo": true,
                 "reveal": "never",
                 "focus": false,
                 "panel": "shared",
