@@ -7,7 +7,7 @@ Using the Planetary Computer Data Generator requires the Plugin, the Plguin Conf
 		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0": {
             "app_name": "MyAwesomeApp",
             "download_artifacts": "PlanetaryComputer.proto, datagenerator-planetary-computer.yaml, planetary-computer-vth-plugin.dll, planetary-computer-vth-plugin.json.spacefx_plugin",
-            "pull_containers": "datagenerator-planetary-computer:0.11.0-nightly"
+            "pull_containers": "datagenerator-planetary-computer:0.11.0"
 		}
 	},
 ```

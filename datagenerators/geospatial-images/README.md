@@ -7,7 +7,7 @@ Using the Geospatial Images Data Generator requires the Plugin, the Plugin Confi
 		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0": {
             "app_name": "MyAwesomeApp",
             "download_artifacts": "GeospatialImages.proto, datagenerator-geospatial-images.yaml, geospatial-images-vth-plugin.dll, geospatial-images-vth-plugin.json.spacefx_plugin",
-            "pull_containers": "datagenerator-geospatial-images:0.11.0-nightly"
+            "pull_containers": "datagenerator-geospatial-images:0.11.0"
 		}
 	},
 ```
