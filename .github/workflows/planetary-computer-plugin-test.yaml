@@ -17,8 +17,7 @@ jobs:
       checks: write
       pull-requests: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@al/test-plugin-workflow
-    with:
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@main
       APP_NAME: vth
       PLUGIN_NAME: planetary-computer-vth-plugin
       WORKFLOW_AGENT: ubuntu-latest
@@ -37,7 +36,7 @@ jobs:
       checks: write
       pull-requests: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@al/test-plugin-workflow
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@main
     with:
       APP_NAME: vth
       PLUGIN_NAME: planetary-computer-vth-plugin
