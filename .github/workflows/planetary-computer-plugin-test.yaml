@@ -1,8 +1,12 @@
-name: test-hostsvc-link
+name: test-planetary-computer-plugin
 
 on:
     workflow_dispatch:
     push:
+      paths:
+        - 'datagenerators/planetary-computer/plugin/**'
+        - '.github/workflows/planetary-computer-plugin-build.yaml'
+
     pull_request:
       branches: [ main ]
       paths:
