@@ -28,7 +28,6 @@ jobs:
       PLUGIN_NAME: planetary-computer-vth-plugin
       WORKFLOW_AGENT: ubuntu-latest
       DEVCONTAINER_JSON: ./.devcontainer/planetary-computer-vth-plugin/devcontainer.json
-      REPO_DIR: datagenerators/planetary-computer/plugin
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
@@ -48,7 +47,6 @@ jobs:
       PLUGIN_NAME: planetary-computer-vth-plugin
       WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
       DEVCONTAINER_JSON: ./.devcontainer/planetary-computer-vth-plugin/devcontainer.json
-      REPO_DIR: ./datagenerators/planetary-computer/plugin
     secrets:
       GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
       GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
