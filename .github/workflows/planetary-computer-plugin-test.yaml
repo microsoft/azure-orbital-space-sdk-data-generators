@@ -5,13 +5,13 @@ on:
     push:
       paths:
         - 'datagenerators/planetary-computer/plugin/**'
-        - '.github/workflows/planetary-computer-plugin-build.yaml'
+        - '.github/workflows/planetary-computer-plugin-test.yaml'
 
     pull_request:
       branches: [ main ]
       paths:
         - 'datagenerators/planetary-computer/plugin/**'
-        - '.github/workflows/planetary-computer-plugin-build.yaml'
+        - '.github/workflows/planetary-computer-plugin-test.yaml'
 
 
 jobs:
