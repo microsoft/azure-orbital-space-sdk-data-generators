@@ -2,11 +2,6 @@ name: test-planetary-computer-plugin
 
 on:
     workflow_dispatch:
-    push:
-      paths:
-        - 'datagenerators/planetary-computer/plugin/**'
-        - '.github/workflows/planetary-computer-plugin-test.yaml'
-
     pull_request:
       branches: [ main ]
       paths:
@@ -15,7 +10,7 @@ on:
 
 
 jobs:
-  test-hostsvc-link-amd64:
+  test-planetary-computer-plugin-amd64:
     permissions:
       contents: read
       issues: read
@@ -35,7 +30,7 @@ jobs:
       SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
       
 
-  test-hostsvc-link-arm64:
+  test-planetary-computer-plugin-arm64:
     permissions:
       contents: read
       issues: read
