@@ -1,0 +1,50 @@
+name: test-planetary-computer-plugin
+
+on:
+    workflow_dispatch:
+    pull_request:
+      branches: [ main ]
+      paths:
+        - 'datagenerators/planetary-computer/plugin/**'
+        - '.github/workflows/planetary-computer-plugin-test.yaml'
+
+
+jobs:
+  test-planetary-computer-plugin-amd64:
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@main
+    with:
+      APP_NAME: vth
+      PLUGIN_NAME: planetary-computer-vth-plugin
+      WORKFLOW_AGENT: ubuntu-latest
+      DEVCONTAINER_JSON: ./.devcontainer/planetary-computer-vth-plugin/devcontainer.json
+      REPO_DIR: ./datagenerators/planetary-computer/plugin
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
+      
+
+  test-planetary-computer-plugin-arm64:
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/test-plugin.yaml@main
+    with:
+      APP_NAME: vth
+      PLUGIN_NAME: planetary-computer-vth-plugin
+      WORKFLOW_AGENT: spacesdk-ubuntu-2204LTS-arm64
+      DEVCONTAINER_JSON: ./.devcontainer/planetary-computer-vth-plugin/devcontainer.json
+      REPO_DIR: ./datagenerators/planetary-computer/plugin
+    secrets:
+      GIT_HUB_USER_NAME: ${{ secrets.GIT_HUB_USER_NAME }}
+      GIT_HUB_USER_TOKEN: ${{ secrets.GIT_HUB_USER_TOKEN }}
+      SETUP_REPO_URL: ${{ secrets.SETUP_REPO_URL }}
