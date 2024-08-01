@@ -55,22 +55,19 @@ public class TaskingTests : IClassFixture<TestSharedContext>
         MessageFormats.HostServices.Sensor.TaskingResponse? response = null;
         MessageFormats.HostServices.Sensor.SensorData? data_response = null;
 
-
         var trackingId = Guid.NewGuid().ToString();
 
-        Microsoft.Azure.SpaceFx.PlanetaryComputerGeotiff.EarthImageRequest imageRequest = new()
+        Microsoft.Azure.SpaceFx.GeospatialImages.EarthLineOfSight lineOfSight = new Microsoft.Azure.SpaceFx.GeospatialImages.EarthLineOfSight
         {
-            GeographicCoordinates = new Microsoft.Azure.SpaceFx.PlanetaryComputerGeotiff.GeographicCoordinates()
-            {
-                Latitude = (float)47.6062,
-                Longitude = (float)-122.3321
-            },
-            Collection = "landsat-c2-l2"
+            Latitude = (float)47.6062,
+            Longitude = (float)-122.3321
         };
 
-        imageRequest.Asset.Add("red");
-        imageRequest.Asset.Add("blue");
-        imageRequest.Asset.Add("green");
+        Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageRequest imageRequest = new Microsoft.Azure.SpaceFx.GeospatialImages.EarthImageRequest
+        {
+            LineOfSight = lineOfSight,
+            ImageType = Microsoft.Azure.SpaceFx.GeospatialImages.ImageType.Geotiff
+        };
 
         MessageFormats.HostServices.Sensor.TaskingRequest request = new()
         {
@@ -79,10 +76,9 @@ public class TaskingTests : IClassFixture<TestSharedContext>
                 TrackingId = trackingId,
                 CorrelationId = trackingId
             },
-            SensorID = Microsoft.Azure.SpaceFx.VTH.Plugins.PlanetaryComputerVTHPlugin.SENSOR_ID,
+            SensorID = Microsoft.Azure.SpaceFx.VTH.Plugins.GeospatialImagesPlugin.SENSOR_ID,
             RequestData = Google.Protobuf.WellKnownTypes.Any.Pack(imageRequest)
         };
-
         // Register a callback event to catch the response
         void responseEventHandler(object? _, MessageFormats.HostServices.Sensor.TaskingResponse _response)
         {
