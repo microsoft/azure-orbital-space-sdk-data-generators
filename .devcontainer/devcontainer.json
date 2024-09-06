@@ -7,7 +7,7 @@
 	"workspaceFolder": "/workspace/spacesdk-data-generators",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/spacesdk-data-generators,type=bind,consistency=cached",
     "features": {
-		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0": {
+		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0-nightly": {
 			"app_name": "spacesdk-data-generators",
 			"app_type": "none"
 		}

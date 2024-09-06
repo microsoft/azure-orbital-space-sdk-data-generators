@@ -5,6 +5,7 @@ on:
     push:
         branches:
          - main
+         - '[0-9]*.[0-9]*.[0-9]*-nightly'
         paths:
         - 'datagenerators/geospatial-images/plugin/**'
         - '.github/workflows/geospatial-images-plugin-build.yaml'
@@ -15,7 +16,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@0.11.0-nightly
     with:
       APP_PROJECT: ./src/geospatial-images-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/geospatial-images-vth-plugin/output
@@ -39,7 +40,7 @@ jobs:
       contents: read
       packages: write
 
-    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@main
+    uses: microsoft/azure-orbital-space-sdk-github-actions/.github/workflows/plugin-build.yaml@0.11.0-nightly
     with:
       APP_PROJECT: ./src/geospatial-images-vth-plugin.csproj
       OUTPUT_DIR: /var/spacedev/tmp/geospatial-images-vth-plugin/output
