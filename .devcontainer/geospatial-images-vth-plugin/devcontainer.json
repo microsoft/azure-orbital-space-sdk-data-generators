@@ -9,7 +9,7 @@
 	"workspaceFolder": "/workspace/geospatial-images-vth-plugin",
 	"workspaceMount": "source=${localWorkspaceFolder}/datagenerators/geospatial-images/plugin,target=/workspace/geospatial-images-vth-plugin,type=bind,consistency=cached",
 	"features": {
-		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0": {
+		"ghcr.io/microsoft/azure-orbital-space-sdk/spacefx-dev:0.11.0-nightly": {
 			"app_name": "geospatial-images-vth-plugin",
 			"app_type": "vth-plugin",
 			"addl_debug_shim_suffixes": "client",
